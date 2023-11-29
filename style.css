@@ -1,17 +1,22 @@
+html{
+    max-height: 100vh;
+    overflow: hidden;
+}
 body{
     background-color: rgb(164, 164, 164);
     font-family: sans-serif;
 }
 .title{
     text-align: center;
-    background: linear-gradient(to right, #f900d0,#013faa);
+    background: linear-gradient(to left,#d200af, #013faa);/*  #d200af, #013faa*/
+    /*background: linear-gradient(90deg, #6413de,#de0f80,#d98068); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */                                             
     filter: saturate(200%); /* new*/
     background-clip: content-box;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 .main{
-    background-color: white;
+    background-color: rgba(255, 255, 255,0.9);
     width: 700px;
     height: 500px;
     margin: auto;
@@ -27,6 +32,7 @@ body{
     padding-top: 40px;
     padding-right: 50px;
     padding-left: 60px;
+    flex-wrap: wrap;
 }
 .top div{
     height: 90px;
@@ -37,6 +43,7 @@ body{
     height: 50px;
     margin-right: 45px;
     border-radius: 5px;
+    background-color: rgba(255, 255, 255,0.9);
     border: 1px solid;
     border-color: rgba(62, 61, 61, 0.3);
     text-indent: 15px;
@@ -66,14 +73,15 @@ body{
     left: 560px;
     top: 47px;
     background-color: rgb(156, 0, 138);
-    color: white;
+    color: rgb(255, 254, 254);
+    transition: all 0.3s;
 }
 .calculate:hover{
-    background-color: rgb(214, 2, 189);
+    background-color: rgba(209, 3, 188, 0.7);
+    box-shadow: 5px 5px  10px rgb(51, 51, 51);
+    color: rgb(19, 34, 173)
 }
-.calculate:focus{
-    box-shadow: 2px 2px black;
-}
+
 .bottom{
     padding-left: 70px;
     padding-top: 20px;

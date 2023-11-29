@@ -29,7 +29,8 @@ const now = new Date()
 const currentDay = now.getDate()
 const currentMonth = now.getMonth() + 1 
 const currentYear = now.getFullYear()
-
+// Create a variable that contains true/false; in case of there are any errors, stop the calculation
+let isAllRight = true
 
 // Add an eventlistener to "day" input that will make some error changes when the day is not in the range of 1-31 
 day.addEventListener("change", (e)=>{
@@ -43,6 +44,7 @@ day.addEventListener("change", (e)=>{
             pElems[0].remove()      // If there is, remove it because it's in the range
             day.style.borderColor="rgba(62, 61, 61, 0.3)"
             day.style.borderWidth="1px"
+            isAllRight = true
         } else {
             console.log("day is ok")
         }
@@ -55,6 +57,7 @@ day.addEventListener("change", (e)=>{
             dayDiv.appendChild(pDay)
             day.style.borderColor="red"
             day.style.borderWidth="2px"
+            isAllRight = false
         }
     }
 })
@@ -71,6 +74,7 @@ month.addEventListener("change", (e)=>{
             pElems[0].remove()      // If there is, remove it because it's in the range
             month.style.borderColor="rgba(62, 61, 61, 0.3)"
             month.style.borderWidth="1px"
+            isAllRight = true
         } else {
             console.log("month is ok")
         }
@@ -83,12 +87,13 @@ month.addEventListener("change", (e)=>{
             monthDiv.appendChild(pMonth)
             month.style.borderColor="red"
             month.style.borderWidth="2px"
+            isAllRight = false
         }
         
     }
 })
 
-// Add an eventlistener to "yer" input that will make some error changes when the year is in the future
+// Add an eventlistener to "year" input that will make some error changes when the year is in the future
 // (now is 2023, user can enter 2023 as birth year but if the user enter a date that is in the future we will carry that later)
 year.addEventListener("change", (e)=>{
     e.preventDefault()
@@ -96,11 +101,12 @@ year.addEventListener("change", (e)=>{
     let numberYear = Number(numberStrYear)
     let pElems = yearDiv.querySelectorAll("p")      // Look at the div of "year" input for a p element (we will show error messages on p elements)
     console.log(numberYear)
-    if (numberYear<=currentYear+1){      // Check the input value is not more than current year + 1 (user will be able to enter now's year)
+    if (numberYear<=currentYear){      // Check the input value is not more than current year (user will be able to enter now's year)
         if (pElems.length>0){       // Make sure that there are no error messages shown to user
             pElems[0].remove()      // If there is, remove it because it's in the range
             year.style.borderColor="rgba(62, 61, 61, 0.3)"
             year.style.borderWidth="1px"
+            isAllRight = true
         } else {
             console.log("year is ok")
         }
@@ -113,11 +119,12 @@ year.addEventListener("change", (e)=>{
             yearDiv.appendChild(pYear)
             year.style.borderColor="red"
             year.style.borderWidth="2px"
+            isAllRight = false
         }
     }
 })
 
-// If the "day" input is empty and user tried to calculate (when user clicked on the button), we will make some changes that shown as an error 
+// If the "day" input is empty and user tried to calculate (when user clicks on the button), we will make some changes that shown as an error 
 button.addEventListener("click",(e)=>{
     e.preventDefault()
     let pElems = dayDiv.querySelectorAll("p")       // Look at the div of "day" input for a p element (we will show error messages on p elements)
@@ -277,52 +284,103 @@ button.addEventListener("click",(e)=>{
 // Finally, we covered almost all of the errors, now we are going to calculate the age according to inputs and current date
 button.addEventListener("click",(e)=>{
     e.preventDefault()
-    let yearsLived
-    let monthsLived
-    let daysLived
-    if (month.value>currentMonth){
-        console.log("bizden ilerde")
-        yearsLived = currentYear - year.value - 1
-        monthsLived = currentMonth - month.value + 12
-        if (currentDay >= day.value){
-            daysLived = currentDay - day.value
-        } else {
-            monthsLived -= 1
-            daysLived = currentDay - day.value + 30
-        }
-    } else if (month.value==currentMonth){
-        console.log("ayni ayda")
-        if (day.value>currentDay){
+    let yearsLived = "--"
+    let monthsLived = "--"
+    let daysLived = "--"
+    if (year.value < currentYear){
+
+        if (month.value>currentMonth){
             console.log("bizden ilerde")
             yearsLived = currentYear - year.value - 1
-            monthsLived = currentMonth - month.value + 11
-            daysLived = currentDay - day.value + 30
-        } else if (day.value==currentDay){
-            console.log("ayni günde , doğum günü")
-            yearsLived = currentYear - year.value
-            monthsLived = currentMonth - month.value
-            daysLived = currentDay - day.value
+            monthsLived = currentMonth - month.value + 12
+            if (currentDay >= day.value){
+                daysLived = currentDay - day.value
+            } else {
+                monthsLived -= 1
+                daysLived = currentDay - day.value + 30
+            }
+        } else if (month.value==currentMonth){
+            console.log("ayni ayda")
+            if (day.value>currentDay){
+                console.log("bizden ilerde")
+                yearsLived = currentYear - year.value - 1
+                monthsLived = currentMonth - month.value + 11
+                daysLived = currentDay - day.value + 30
+
+            } else if (day.value==currentDay){
+                console.log("ayni günde , doğum günü")
+                yearsLived = currentYear - year.value
+                monthsLived = currentMonth - month.value
+                daysLived = currentDay - day.value
+            } else {
+                console.log("bizden geride")
+                yearsLived = currentYear - year.value
+                monthsLived = currentMonth - month.value
+                daysLived = currentDay - day.value
+            }
         } else {
             console.log("bizden geride")
             yearsLived = currentYear - year.value
             monthsLived = currentMonth - month.value
-            daysLived = currentDay - day.value
+            if (currentDay < day.value){
+                monthsLived -= 1
+                daysLived = currentDay - day.value +30
+            } else {
+                daysLived = currentDay - day.value
+            }
         }
-    } else {
-        console.log("bizden geride")
-        yearsLived = currentYear - year.value
-        monthsLived = currentMonth - month.value
-        if (currentDay < day.value){
-            monthsLived -= 1
-            daysLived = currentDay - day.value +30
+
+    } else if (year.value == currentYear){
+
+        console.log("bizimle ayni yilda")
+
+        if (month.value < currentMonth){
+
+            yearsLived = currentYear - year.value
+            if (day.value > currentDay) {
+                monthsLived = currentMonth - month.value - 1
+                daysLived = currentDay - day.value + 30
+            } else {
+                monthsLived = currentMonth - month.value
+                daysLived = currentDay - day.value
+            }
+
+        } else if (month.value == currentMonth){
+            yearsLived = currentYear - year.value
+            monthsLived = currentMonth - month.value
+            if (day.value <= currentDay){
+                daysLived = currentDay - day.value
+            } else {
+                console.log("yil ayni, ay ayni, gün ilerde")
+                let warningP = createP("date")
+                monthDiv.appendChild(warningP)
+                yearsLived = "--"
+                monthsLived = "--"
+                daysLived = "--"
+            }
         } else {
-            daysLived = currentDay - day.value
+            console.log("ayni yil ay olarak ilerde")
+            let warningP = createP("date")
+            monthDiv.appendChild(warningP)
+            yearsLived = "--"
+            monthsLived = "--"
+            daysLived = "--"
         }
+
+    } else {
+        console.log("bizden çook ilerde")
+        let warningP = createP("date")
+        monthDiv.appendChild(warningP)
+        yearsLived = "--"
+        monthsLived = "--"
+        daysLived = "--"
     }
-   
-    showYears.textContent = yearsLived + "  " 
-    showMonths.textContent = monthsLived + "  "
-    showDays.textContent = daysLived + "  "
+    if (isAllRight) { // if there is no error shown, display the calculated age
+        showYears.textContent = yearsLived + "  " 
+        showMonths.textContent = monthsLived + "  "
+        showDays.textContent = daysLived + "  "
+    }
+    
 
     if (monthsLived==0 && daysLived==0){     // Check If today is user's birthday, if it is show a message
         console.log("happy birthday")
@@ -332,7 +390,14 @@ button.addEventListener("click",(e)=>{
         console.log("doğum günü yaklaşiyor")
         let howManyDays = 30 - daysLived
         let bottomP = createP(null,null,null, "toBirthday", howManyDays)
+        if (bottom.querySelector("p")){
+            bottom.querySelector("p").remove()
+        }
         bottom.appendChild(bottomP)
+    } else {   // If today is not user's birthday and there isn't less than a month
+        if (bottom.querySelector("p")){  // Check if there is a message shown, if there is remove it
+            bottom.querySelector("p").remove()
+        }
     }
 })
 
