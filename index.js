@@ -354,26 +354,26 @@ button.addEventListener("click",(e)=>{
                 console.log("yil ayni, ay ayni, gün ilerde")
                 let warningP = createP("date")
                 monthDiv.appendChild(warningP)
-                yearsLived = "--"
-                monthsLived = "--"
-                daysLived = "--"
+                yearsLived = "- -"
+                monthsLived = "- -"
+                daysLived = "- -"
             }
         } else {
             console.log("ayni yil ay olarak ilerde")
             let warningP = createP("date")
             monthDiv.appendChild(warningP)
-            yearsLived = "--"
-            monthsLived = "--"
-            daysLived = "--"
+            yearsLived = "- -"
+            monthsLived = "- -"
+            daysLived = "- -"
         }
 
     } else {
         console.log("bizden çook ilerde")
         let warningP = createP("date")
         monthDiv.appendChild(warningP)
-        yearsLived = "--"
-        monthsLived = "--"
-        daysLived = "--"
+        yearsLived = "- -a"
+        monthsLived = "- -"
+        daysLived = "- -"
     }
     if (isAllRight) { // if there is no error shown, display the calculated age
         showYears.textContent = yearsLived + "  " 
